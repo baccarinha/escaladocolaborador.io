@@ -62,7 +62,7 @@ export default function EscalaColaboradores() {
   };
 
   return (
-    <div className="p-4 min-h-screen bg-gradient-to-r from-red-500 to-yellow-500 flex flex-col items-center">
+    <div className="p-4 min-h-screen bg-gradient-to-r from-gray-900 to-gray-400 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-4 text-white">Fort Atacadista</h1>
       <h1 className="text-xl font-bold mb-4 text-white">Escala de Colaboradores - Loja 635 Jundiaí</h1>
       <Card className="w-full max-w-4xl">
