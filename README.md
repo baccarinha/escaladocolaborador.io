@@ -1,0 +1,1 @@
+# escaladocolaborador.io
