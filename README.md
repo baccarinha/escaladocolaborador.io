@@ -9,16 +9,13 @@ export default function EscalaColaboradores() {
   const [colaboradores, setColaboradores] = useState([]);
   const [novoColaborador, setNovoColaborador] = useState({
     nome: "",
-    diasTrabalho: "",
+    dia: "",
     entrada: "",
     saida: "",
     almocoEntrada: "",
     almocoSaida: "",
-    caixa: "",
-    folga: "",
-    cargo: "",
-    status: "",
-    dataCriacao: new Date().toLocaleDateString("pt-BR"),
+    turno: "",
+    funcao: "",
   });
   const [editandoId, setEditandoId] = useState(null);
 
@@ -31,30 +28,18 @@ export default function EscalaColaboradores() {
       );
       setEditandoId(null);
     } else {
-      setColaboradores([...colaboradores, { ...novoColaborador, id: Date.now(), dataCriacao: new Date().toLocaleDateString("pt-BR") }]);
+      setColaboradores([...colaboradores, { ...novoColaborador, id: Date.now() }]);
     }
     setNovoColaborador({
       nome: "",
-      diasTrabalho: "",
+      dia: "",
       entrada: "",
       saida: "",
       almocoEntrada: "",
       almocoSaida: "",
-      caixa: "",
-      folga: "",
-      cargo: "",
-      status: "",
-      dataCriacao: new Date().toLocaleDateString("pt-BR"),
+      turno: "",
+      funcao: "",
     });
-  };
-
-  const excluirColaborador = (id) => {
-    setColaboradores(colaboradores.filter((colaborador) => colaborador.id !== id));
-  };
-
-  const editarColaborador = (colaborador) => {
-    setNovoColaborador(colaborador);
-    setEditandoId(colaborador.id);
   };
 
   const imprimirEscala = () => {
@@ -62,7 +47,7 @@ export default function EscalaColaboradores() {
   };
 
   return (
-    <div className="p-4 min-h-screen bg-gradient-to-r from-gray-900 to-gray-400 flex flex-col items-center">
+    <div className="p-4 min-h-screen bg-gray-600 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-4 text-white">Fort Atacadista</h1>
       <h1 className="text-xl font-bold mb-4 text-white">Escala de Colaboradores - Loja 635 Jundiaí</h1>
       <Card className="w-full max-w-4xl">
@@ -73,57 +58,49 @@ export default function EscalaColaboradores() {
             onChange={(e) => setNovoColaborador({ ...novoColaborador, nome: e.target.value })}
           />
           <Input
-            placeholder="Dias de Trabalho"
-            value={novoColaborador.diasTrabalho}
-            onChange={(e) => setNovoColaborador({ ...novoColaborador, diasTrabalho: e.target.value })}
+            placeholder="Dia"
+            type="date"
+            value={novoColaborador.dia}
+            onChange={(e) => setNovoColaborador({ ...novoColaborador, dia: e.target.value })}
           />
+          <Select
+            value={novoColaborador.turno}
+            onValueChange={(value) => setNovoColaborador({ ...novoColaborador, turno: value })}
+          >
+            <SelectTrigger className="w-full">{novoColaborador.turno || "Selecione um turno"}</SelectTrigger>
+            <SelectContent>
+              <SelectItem value="06:40 - 15:00">06:40 - 15:00</SelectItem>
+              <SelectItem value="08:00 - 16:20">08:00 - 16:20</SelectItem>
+              <SelectItem value="11:00 - 19:20">11:00 - 19:20</SelectItem>
+              <SelectItem value="13:00 - 21:20">13:00 - 21:20</SelectItem>
+              <SelectItem value="14:30 - 22:50">14:30 - 22:50</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select
+            value={novoColaborador.funcao}
+            onValueChange={(value) => setNovoColaborador({ ...novoColaborador, funcao: value })}
+          >
+            <SelectTrigger className="w-full">{novoColaborador.funcao || "Selecione uma função"}</SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Operador(a)">Operador(a)</SelectItem>
+              <SelectItem value="Carrinhos">Carrinhos</SelectItem>
+              <SelectItem value="Self">Self</SelectItem>
+              <SelectItem value="Sac">Sac</SelectItem>
+              <SelectItem value="Assistentes">Assistentes</SelectItem>
+            </SelectContent>
+          </Select>
           <Input
-            placeholder="Entrada"
-            type="time"
-            value={novoColaborador.entrada}
-            onChange={(e) => setNovoColaborador({ ...novoColaborador, entrada: e.target.value })}
-          />
-          <Input
-            placeholder="Saída"
-            type="time"
-            value={novoColaborador.saida}
-            onChange={(e) => setNovoColaborador({ ...novoColaborador, saida: e.target.value })}
-          />
-          <Input
-            placeholder="Almoço Entrada"
+            placeholder="Entrada Almoço"
             type="time"
             value={novoColaborador.almocoEntrada}
             onChange={(e) => setNovoColaborador({ ...novoColaborador, almocoEntrada: e.target.value })}
           />
           <Input
-            placeholder="Almoço Saída"
+            placeholder="Saída Almoço"
             type="time"
             value={novoColaborador.almocoSaida}
             onChange={(e) => setNovoColaborador({ ...novoColaborador, almocoSaida: e.target.value })}
           />
-          <Input
-            placeholder="Caixa (1-28 ou Autoatendimento)"
-            value={novoColaborador.caixa}
-            onChange={(e) => setNovoColaborador({ ...novoColaborador, caixa: e.target.value })}
-          />
-          <Input
-            placeholder="Cargo"
-            value={novoColaborador.cargo}
-            onChange={(e) => setNovoColaborador({ ...novoColaborador, cargo: e.target.value })}
-          />
-          <Select
-            value={novoColaborador.status}
-            onValueChange={(value) => setNovoColaborador({ ...novoColaborador, status: value })}
-          >
-            <SelectTrigger className="w-full">{novoColaborador.status || "Selecione um status"}</SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Trabalhando">Trabalhando</SelectItem>
-              <SelectItem value="Folga">Folga</SelectItem>
-              <SelectItem value="Atestado">Atestado</SelectItem>
-              <SelectItem value="Férias">Férias</SelectItem>
-              <SelectItem value="Afastado">Afastado</SelectItem>
-            </SelectContent>
-          </Select>
           <Button onClick={adicionarColaborador}>{editandoId ? "Salvar" : "Adicionar"}</Button>
         </CardContent>
       </Card>
@@ -131,33 +108,26 @@ export default function EscalaColaboradores() {
         <thead>
           <tr>
             <th>Nome</th>
-            <th>Dias</th>
+            <th>Dia</th>
+            <th>Turno</th>
+            <th>Função</th>
             <th>Entrada</th>
             <th>Saída</th>
-            <th>Almoço</th>
-            <th>Caixa</th>
-            <th>Cargo</th>
-            <th>Status</th>
-            <th>Data</th>
-            <th>Ações</th>
+            <th>Almoço Entrada</th>
+            <th>Almoço Saída</th>
           </tr>
         </thead>
         <tbody>
           {colaboradores.map((colaborador) => (
             <tr key={colaborador.id}>
               <td>{colaborador.nome}</td>
-              <td>{colaborador.diasTrabalho}</td>
+              <td>{colaborador.dia}</td>
+              <td>{colaborador.turno}</td>
+              <td>{colaborador.funcao}</td>
               <td>{colaborador.entrada}</td>
               <td>{colaborador.saida}</td>
-              <td>{colaborador.almocoEntrada} - {colaborador.almocoSaida}</td>
-              <td>{colaborador.caixa}</td>
-              <td>{colaborador.cargo}</td>
-              <td>{colaborador.status}</td>
-              <td>{colaborador.dataCriacao}</td>
-              <td>
-                <Button onClick={() => editarColaborador(colaborador)}>Editar</Button>
-                <Button onClick={() => excluirColaborador(colaborador.id)} variant="destructive">Excluir</Button>
-              </td>
+              <td>{colaborador.almocoEntrada}</td>
+              <td>{colaborador.almocoSaida}</td>
             </tr>
           ))}
         </tbody>
