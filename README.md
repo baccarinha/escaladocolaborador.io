@@ -10,12 +10,11 @@ export default function EscalaColaboradores() {
   const [novoColaborador, setNovoColaborador] = useState({
     nome: "",
     dia: "",
-    entrada: "",
-    saida: "",
     almocoEntrada: "",
     almocoSaida: "",
     turno: "",
     funcao: "",
+    numeroCaixa: ""
   });
   const [editandoId, setEditandoId] = useState(null);
 
@@ -33,17 +32,12 @@ export default function EscalaColaboradores() {
     setNovoColaborador({
       nome: "",
       dia: "",
-      entrada: "",
-      saida: "",
       almocoEntrada: "",
       almocoSaida: "",
       turno: "",
       funcao: "",
+      numeroCaixa: ""
     });
-  };
-
-  const imprimirEscala = () => {
-    window.print();
   };
 
   return (
@@ -52,21 +46,9 @@ export default function EscalaColaboradores() {
       <h1 className="text-xl font-bold mb-4 text-white">Escala de Colaboradores - Loja 635 Jundiaí</h1>
       <Card className="w-full max-w-4xl">
         <CardContent className="grid grid-cols-3 gap-2 p-4">
-          <Input
-            placeholder="Nome"
-            value={novoColaborador.nome}
-            onChange={(e) => setNovoColaborador({ ...novoColaborador, nome: e.target.value })}
-          />
-          <Input
-            placeholder="Dia"
-            type="date"
-            value={novoColaborador.dia}
-            onChange={(e) => setNovoColaborador({ ...novoColaborador, dia: e.target.value })}
-          />
-          <Select
-            value={novoColaborador.turno}
-            onValueChange={(value) => setNovoColaborador({ ...novoColaborador, turno: value })}
-          >
+          <Input placeholder="Nome" value={novoColaborador.nome} onChange={(e) => setNovoColaborador({ ...novoColaborador, nome: e.target.value })} />
+          <Input placeholder="Dia" type="date" value={novoColaborador.dia} onChange={(e) => setNovoColaborador({ ...novoColaborador, dia: e.target.value })} />
+          <Select value={novoColaborador.turno} onValueChange={(value) => setNovoColaborador({ ...novoColaborador, turno: value })}>
             <SelectTrigger className="w-full">{novoColaborador.turno || "Selecione um turno"}</SelectTrigger>
             <SelectContent>
               <SelectItem value="06:40 - 15:00">06:40 - 15:00</SelectItem>
@@ -76,10 +58,7 @@ export default function EscalaColaboradores() {
               <SelectItem value="14:30 - 22:50">14:30 - 22:50</SelectItem>
             </SelectContent>
           </Select>
-          <Select
-            value={novoColaborador.funcao}
-            onValueChange={(value) => setNovoColaborador({ ...novoColaborador, funcao: value })}
-          >
+          <Select value={novoColaborador.funcao} onValueChange={(value) => setNovoColaborador({ ...novoColaborador, funcao: value })}>
             <SelectTrigger className="w-full">{novoColaborador.funcao || "Selecione uma função"}</SelectTrigger>
             <SelectContent>
               <SelectItem value="Operador(a)">Operador(a)</SelectItem>
@@ -89,50 +68,21 @@ export default function EscalaColaboradores() {
               <SelectItem value="Assistentes">Assistentes</SelectItem>
             </SelectContent>
           </Select>
-          <Input
-            placeholder="Entrada Almoço"
-            type="time"
-            value={novoColaborador.almocoEntrada}
-            onChange={(e) => setNovoColaborador({ ...novoColaborador, almocoEntrada: e.target.value })}
-          />
-          <Input
-            placeholder="Saída Almoço"
-            type="time"
-            value={novoColaborador.almocoSaida}
-            onChange={(e) => setNovoColaborador({ ...novoColaborador, almocoSaida: e.target.value })}
-          />
+          {(novoColaborador.funcao === "Operador(a)" || novoColaborador.funcao === "Self") && (
+            <Select value={novoColaborador.numeroCaixa} onValueChange={(value) => setNovoColaborador({ ...novoColaborador, numeroCaixa: value })}>
+              <SelectTrigger className="w-full">{novoColaborador.numeroCaixa || "Selecione o número do caixa"}</SelectTrigger>
+              <SelectContent>
+                {[...Array(28).keys()].map(num => (
+                  <SelectItem key={num + 1} value={`${num + 1}`}>{num + 1}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+          <Input placeholder="Entrada Almoço" type="time" value={novoColaborador.almocoEntrada} onChange={(e) => setNovoColaborador({ ...novoColaborador, almocoEntrada: e.target.value })} />
+          <Input placeholder="Saída Almoço" type="time" value={novoColaborador.almocoSaida} onChange={(e) => setNovoColaborador({ ...novoColaborador, almocoSaida: e.target.value })} />
           <Button onClick={adicionarColaborador}>{editandoId ? "Salvar" : "Adicionar"}</Button>
         </CardContent>
       </Card>
-      <Table className="mt-4 w-full max-w-4xl">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Dia</th>
-            <th>Turno</th>
-            <th>Função</th>
-            <th>Entrada</th>
-            <th>Saída</th>
-            <th>Almoço Entrada</th>
-            <th>Almoço Saída</th>
-          </tr>
-        </thead>
-        <tbody>
-          {colaboradores.map((colaborador) => (
-            <tr key={colaborador.id}>
-              <td>{colaborador.nome}</td>
-              <td>{colaborador.dia}</td>
-              <td>{colaborador.turno}</td>
-              <td>{colaborador.funcao}</td>
-              <td>{colaborador.entrada}</td>
-              <td>{colaborador.saida}</td>
-              <td>{colaborador.almocoEntrada}</td>
-              <td>{colaborador.almocoSaida}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      <Button className="mt-4" onClick={imprimirEscala}>Imprimir</Button>
     </div>
   );
 }
